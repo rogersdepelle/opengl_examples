@@ -1,4 +1,3 @@
-
 #ifdef __APPLE__
 #  include <GL/glew.h>
 #  include <GL/freeglut.h>
@@ -21,9 +20,12 @@ float RY = -100;
 float alpha = 90.0;
 
 // Circle
-static float CR = 15.0;       // Radius of circle.
-static float CX = 50.0;       // X-coordinate of center of circle.
-static float CY = 31.3;       // Y-coordinate of center of circle.
+float CX = -0.0;
+float CY = -0.0;
+
+static float SCR = 15.0;       // Radius of circle.
+static float SCX = 50.0;       // X-coordinate of center of circle.
+static float SCY = 31.3;       // Y-coordinate of center of circle.
 static int numVertices = 100; // Number of vertices on circle.
 
 // Refresh Time
@@ -48,13 +50,6 @@ void drawScene(void)
       glEnd();
    glPopMatrix();
 
-   /*
-   if(RX != 0 || RY != 0){
-      RX += 0.5;
-      RY += 0.5;
-   }
-   */
-
    //Yellow Diamond
    glPushMatrix();
       glRotatef((GLfloat) alpha, 0.0, 0.0, 1.0);
@@ -67,24 +62,32 @@ void drawScene(void)
       glEnd();
    glPopMatrix();
 
-   if(alpha > 0){
-      alpha -= 0.5;
-   }
-
-   /*
    //Blue Circle
    glPushMatrix();
       glColor3f(0.0, 0.15, 0.46);
-      glScalef(1.0, 1.6, 1.0);
+      glScalef(1.0, 1.6, 0);
+      glScalef(CX, CY, 0);
       glBegin(GL_POLYGON);
          float t = 0;
          for(int i = 0; i < numVertices; ++i){
-            glVertex3f(CX + CR * cos(t), CY + CR * sin(t), 0.0);
+            glVertex3f(SCX + SCR * cos(t), SCY + SCR * sin(t), 0.0);
             t += 2 * PI / numVertices;
          }
       glEnd();
    glPopMatrix();
-   */
+
+   if(RX < 0){
+      RX += 0.5;
+      RY += 0.5;
+   }
+   else if(alpha > 0){
+      alpha -= 0.5;
+   }
+   else if(CX < 1.0){
+      CX += 0.01;
+      CY += 0.01;
+   }
+
    glFlush();
 }
 
